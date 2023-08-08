@@ -9,6 +9,7 @@ from sys import platform
 def set_advanced(window, param):
     param["switch_advanced"] = True
     window.quit()
+  
 # ----------------카메라 인터페이스 추가, 크기 : 320, 240(07/30 국현우)---------------
 def show_camera_frame(): 
     global camera, canvas, window
@@ -35,6 +36,7 @@ def show_camera_frame():
     window.after(10, show_camera_frame)
 #--------------------------------------------------------------
 def getparams():
+    
     global camera, canvas, window # 카메라 인터페이스 구현을 위한 전역변수설정(07/30 국현우)
     try:
         param = pickle.load(open("params.p", "rb"))
@@ -42,7 +44,7 @@ def getparams():
         param = {}
 
     if "camid" not in param:
-        param["camid"] = 'http://192.168.1.103:8080/video'
+        param["camid"] = '0'
     if "imgsize" not in param:
         param["imgsize"] = 640
     if "neckoffset" not in param:
@@ -110,10 +112,9 @@ def getparams():
 
     if not param["advanced"]:
         tk.Label(
-            text="The format http://<ip-here>:8080/video is for use with\n the IP Webcam android application.\n If using something else, such as a regular USB Webcam,\n just try 0,1,2... until the correct camera opens.",
-            width=50
         ).pack()
-
+    
+    
     tk.Label(text="Camera IP or ID:", width=50).pack()
     camid = tk.Entry(width=50)
     camid.pack()
@@ -121,8 +122,6 @@ def getparams():
 
     if not param["advanced"]:
         tk.Label(
-            text="NOTE: Increasing resolution may decrease performance.\n Unless you have problems with opening camera, leave it as default.",
-            width=50
         ).pack()
 
     tk.Label(text="Camera width:", width=50).pack()
@@ -134,12 +133,12 @@ def getparams():
     camheight = tk.Entry(width=20)
     camheight.pack()
     camheight.insert(0, param["camera_height"])
-
+    ''' 
     if platform == "win32":
         if not param["advanced"]:
             tk.Label(
-                text="NOTE: Opening camera settings may change camera behaviour. \nSome cameras may only work with this enabled, some only with this \ndisabled, and it may change which camera ID you have to use.",
-                width=55
+                #text="NOTE: Opening camera settings may change camera behaviour. \nSome cameras may only work with this enabled, some only with this \ndisabled, and it may change which camera ID you have to use.",
+                #width=55
             ).pack()
 
     varcamsettings = tk.IntVar(value=param["camera_settings"])
@@ -158,20 +157,9 @@ def getparams():
     varfeet = tk.IntVar(value=param["feetrot"])
     rot_feet_check = tk.Checkbutton(text="Enable experimental foot rotation", variable=varfeet)
     rot_feet_check.pack()
-
+'''
     if not param["advanced"]:
-        tk.Label(
-            text="NOTE: VRChat works better with a hip tracker. Only disable it if you \nuse another software for hip tracking, such as owoTrack.",
-            width=55
-        ).pack()
-
-    varhip = tk.IntVar(value=param["ignore_hip"])
-    hip_check = tk.Checkbutton(text="Disable hip tracker", variable=varhip)
-    hip_check.pack()
-
-    tk.Label(text="-" * 50, width=50).pack()
-
-    if param["advanced"]:
+       
         # ---- 카메라 인터페이스 GUI (07/30 국현우) ----
         canvas = tk.Canvas(window, width="320", height="240")
         canvas.pack()
@@ -181,7 +169,17 @@ def getparams():
 
         # Display the camera frame in the tkinter window
         show_camera_frame()
+
+    #varhip = tk.IntVar(value=param["ignore_hip"])
+    #hip_check = tk.Checkbutton(text="Disable hip tracker", variable=varhip)
+    #hip_check.pack()
+
+    tk.Label(text="-" * 50, width=50).pack()
+
+    if param["advanced"]:
+        
     #------------------------------------------------------
+    
         varhand = tk.IntVar(value=param["use_hands"])
         hand_check = tk.Checkbutton(text="DEV: Spawn trackers for hands", variable=varhand)
         hand_check.pack()
@@ -192,7 +190,7 @@ def getparams():
 
         tk.Label(text="-" * 50, width=50).pack()
 
-        tk.Label(text="[ADVANCED] MediaPipe estimator parameters:", width=50).pack()
+        #tk.Label(text="[ADVANCED] MediaPipe estimator parameters:", width=50).pack()
     '''
     ----- 개인적으로 없어도 된다고 생각되는부분(07/30 국현우) ----
 
@@ -224,12 +222,12 @@ def getparams():
             backend_options_frame.pack(side=tk.BOTTOM)
         else:
             backend_options_frame.pack_forget()
-
-    tk.Label(backend_selection_frame, text="Backend: ").pack(side=tk.LEFT)
+    
+ 
     tk.Radiobutton(backend_selection_frame, text="SteamVR", variable=varbackend, value=1, command=show_hide_backend_options).pack(side=tk.LEFT)
     tk.Radiobutton(backend_selection_frame, text="VRChatOSC", variable=varbackend, value=2, command=show_hide_backend_options).pack(side=tk.LEFT)
     backend_selection_frame.pack(side=tk.TOP)
-
+    
     tk.Label(backend_options_frame, text="IP/port:").pack(side=tk.LEFT)
     backend_ip = tk.Entry(backend_options_frame, width=15)
     backend_ip.insert(0, param["backend_ip"])
@@ -240,38 +238,36 @@ def getparams():
 
     show_hide_backend_options()
     backend_frame.pack()
-
+    '''
     tk.Label(text="-" * 50, width=50).pack()
 
     varwebui = tk.IntVar(value=param["webui"])
     webui_check = tk.Checkbutton(text="Enable webui to control parameters from another device", variable=varwebui)
     webui_check.pack()
-
+    '''
     param["switch_advanced"] = False
     if param["advanced"]:
         tk.Label(text="-" * 50, width=50).pack()
-        tk.Button(text='Disable advanced mode', command=lambda *args: set_advanced(window, param)).pack()
+        tk.Button(text='BACK TO THE MENU', command=lambda *args: set_advanced(window, param)).pack()
     else:
-        tk.Button(text='Enable advanced mode', command=lambda *args: set_advanced(window, param)).pack()
+        tk.Button(text='SETTING', command=lambda *args: set_advanced(window, param)).pack()
 
-    tk.Button(text='Save and Continue', command=window.quit).pack()
+    tk.Button(text='SAVE AND CONTINUE', command=window.quit).pack()
 
-  
 
     window.mainloop()
+#----------------------------------------------------------"
 
-
-    cameraid = camid.get()
-    #hmd_to_neck_offset = [float(val) for val in hmdoffsettext.get().split(" ")]
+    cameraid = camid
+    #hmd_to_neck_offset = [0.0, -0.2, 0.1]
     
     dont_wait_hmd = False #bool(varhmdwait.get()) 
     
-    #camera_latency = float(camlatencytext.get())
-    #smoothing = float(smoothingtext.get())
-    feet_rotation = bool(varfeet.get())
+    #camera_latency = 0.05
+    #smoothing = True
+    feet_rotation = False
     
-    ignore_hip = bool(varhip.get())
-    camera_settings = bool(varcamsettings.get())
+    ignore_hip = False
     camera_height = camheight.get()
     camera_width = camwidth.get()
     
@@ -279,18 +275,17 @@ def getparams():
     backend_ip_set = backend_ip.get()
     backend_port_set = int(backend_port.get())
     
-    webui = bool(varwebui.get())
+    webui = False
     
     if param["advanced"]:
-        maximgsize = int(maximgsize.get())
+        maximgsize = 640
         
         preview_skeleton = bool(varskel.get())
         use_hands = bool(varhand.get())
-        
-        mp_smoothing = bool(varmsmooth.get())
-        model_complexity = int(modelc.get())
-        min_tracking_confidence = float(trackc.get())
-        static_image = bool(varstatic.get())
+        mp_smoothing = True
+        model_complexity = 1
+        min_tracking_confidence = 0.5
+        static_image = False
 
     else:
         maximgsize = 640
@@ -308,22 +303,22 @@ def getparams():
     advanced = param["advanced"]
 
     param = {}
-    param["camid"] = cameraid
+    param["camid"] = camid
     param["imgsize"] = maximgsize
-    #param["neckoffset"] = hmd_to_neck_offset
+    param["neckoffset"] = [0.0, -0.2, 0.1]
     param["prevskel"] = preview_skeleton
     param["waithmd"] = dont_wait_hmd
-
-    #param["smooth"] = smoothing
-    #param["camlatency"] = camera_latency
-    param["feetrot"] = feet_rotation
+ #추가 주석처리 (08/01)
+    param["smooth"] = 0.5
+    param["camlatency"] = 0.05
+    param["feetrot"] = False
     param["use_hands"] = use_hands
-    param["ignore_hip"] = ignore_hip
+    param["ignore_hip"] = False
     
-    param["camera_settings"] = camera_settings
+    param["camera_settings"] = False
     param["camera_height"] = camera_height
     param["camera_width"] = camera_width
-    
+     #추가 주석처리 (08/01)
     param["model_complexity"] = model_complexity
     param["smooth_landmarks"] = mp_smoothing
     param["static_image"] = static_image
@@ -331,7 +326,7 @@ def getparams():
     param["backend"] = backend
     param["backend_ip"] = backend_ip_set
     param["backend_port"] = backend_port_set
-    param["webui"] = webui
+    param["webui"] = False
     
     if switch_advanced:
         param["advanced"] = not advanced
