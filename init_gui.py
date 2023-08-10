@@ -114,12 +114,12 @@ def getparams():
         tk.Label(
         ).pack()
     
-    
+    '''
     tk.Label(text="Camera IP or ID:", width=50).pack()
     camid = tk.Entry(width=50)
     camid.pack()
     camid.insert(0, param["camid"])
-
+    '''
     if not param["advanced"]:
         tk.Label(
         ).pack()
@@ -258,7 +258,7 @@ def getparams():
     window.mainloop()
 #----------------------------------------------------------"
 
-    cameraid = camid
+    cameraid = '0'
     #hmd_to_neck_offset = [0.0, -0.2, 0.1]
     
     dont_wait_hmd = False #bool(varhmdwait.get()) 
@@ -303,7 +303,7 @@ def getparams():
     advanced = param["advanced"]
 
     param = {}
-    param["camid"] = camid
+    param["camid"] = '0'
     param["imgsize"] = maximgsize
     param["neckoffset"] = [0.0, -0.2, 0.1]
     param["prevskel"] = preview_skeleton
