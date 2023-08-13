@@ -110,10 +110,17 @@ def getparams():
 
     window.protocol("WM_DELETE_WINDOW", on_close)
 
-    if not param["advanced"]:
-        tk.Label(
-        ).pack()
-    
+    if param["advanced"]:
+       
+        camwidth = tk.Entry(width=20)
+        camwidth.pack_forget()
+        camwidth.insert(0, param["camera_width"])
+
+        
+        camheight = tk.Entry(width=20)
+        camheight.pack_forget()
+        camheight.insert(0, param["camera_height"])
+        
     '''
     tk.Label(text="Camera IP or ID:", width=50).pack()
     camid = tk.Entry(width=50)
@@ -121,43 +128,16 @@ def getparams():
     camid.insert(0, param["camid"])
     '''
     if not param["advanced"]:
-        tk.Label(
-        ).pack()
+        tk.Label(text="Camera width:", width=50).pack()
+        camwidth = tk.Entry(width=20)
+        camwidth.pack()
+        camwidth.insert(0, param["camera_width"])
 
-    tk.Label(text="Camera width:", width=50).pack()
-    camwidth = tk.Entry(width=20)
-    camwidth.pack()
-    camwidth.insert(0, param["camera_width"])
+        tk.Label(text="Camera height:", width=50).pack()
+        camheight = tk.Entry(width=20)
+        camheight.pack()
+        camheight.insert(0, param["camera_height"])
 
-    tk.Label(text="Camera height:", width=50).pack()
-    camheight = tk.Entry(width=20)
-    camheight.pack()
-    camheight.insert(0, param["camera_height"])
-    ''' 
-    if platform == "win32":
-        if not param["advanced"]:
-            tk.Label(
-                #text="NOTE: Opening camera settings may change camera behaviour. \nSome cameras may only work with this enabled, some only with this \ndisabled, and it may change which camera ID you have to use.",
-                #width=55
-            ).pack()
-
-    varcamsettings = tk.IntVar(value=param["camera_settings"])
-    cam_settings_check = tk.Checkbutton(text="Attempt to open camera settings", variable=varcamsettings)
-    if platform == "win32":
-        cam_settings_check.pack()
-
-    if param["advanced"]:
-        tk.Label(text="Maximum image size:", width=50).pack()
-        maximgsize = tk.Entry(width=20)
-        maximgsize.pack()
-        maximgsize.insert(0, param["imgsize"])
-
-    tk.Label(text="-" * 50, width=50).pack()
-
-    varfeet = tk.IntVar(value=param["feetrot"])
-    rot_feet_check = tk.Checkbutton(text="Enable experimental foot rotation", variable=varfeet)
-    rot_feet_check.pack()
-'''
     if not param["advanced"]:
        
         # ---- 카메라 인터페이스 GUI (07/30 국현우) ----
@@ -170,16 +150,13 @@ def getparams():
         # Display the camera frame in the tkinter window
         show_camera_frame()
 
-    #varhip = tk.IntVar(value=param["ignore_hip"])
-    #hip_check = tk.Checkbutton(text="Disable hip tracker", variable=varhip)
-    #hip_check.pack()
-
-    tk.Label(text="-" * 50, width=50).pack()
-
     if param["advanced"]:
         
     #------------------------------------------------------
-    
+        varhip = tk.IntVar(value=param["ignore_hip"])
+        hip_check = tk.Checkbutton(text="Disable hip tracker", variable=varhip)
+        hip_check.pack()
+
         varhand = tk.IntVar(value=param["use_hands"])
         hand_check = tk.Checkbutton(text="DEV: Spawn trackers for hands", variable=varhand)
         hand_check.pack()
@@ -191,26 +168,7 @@ def getparams():
         tk.Label(text="-" * 50, width=50).pack()
 
         #tk.Label(text="[ADVANCED] MediaPipe estimator parameters:", width=50).pack()
-    '''
-    ----- 개인적으로 없어도 된다고 생각되는부분(07/30 국현우) ----
-
-        tk.Label(text="Model complexity:", width=50).pack()
-        modelc = tk.Entry(width=20)
-        modelc.pack()
-
-        varmsmooth = tk.IntVar(value=param["smooth_landmarks"])
-        msmooth_check = tk.Checkbutton(text="Smooth landmarks", variable=varmsmooth)
-        msmooth_check.pack()
-
-        tk.Label(text="Min tracking confidence:", width=50).pack()
-        trackc = tk.Entry(width=20)
-        trackc.pack()
-
-        varstatic = tk.IntVar(value=param["static_image"])
-        static_check = tk.Checkbutton(text="Static image mode", variable=varstatic)
-        static_check.pack()
-    -----------------------------------------------------------
-    '''
+   
     backend_frame = tk.Frame(window)
     backend_selection_frame = tk.Frame(backend_frame)
     backend_options_frame = tk.Frame(backend_frame)
@@ -238,21 +196,16 @@ def getparams():
 
     show_hide_backend_options()
     backend_frame.pack()
-    '''
-    tk.Label(text="-" * 50, width=50).pack()
-
-    varwebui = tk.IntVar(value=param["webui"])
-    webui_check = tk.Checkbutton(text="Enable webui to control parameters from another device", variable=varwebui)
-    webui_check.pack()
-    '''
+   
     param["switch_advanced"] = False
     if param["advanced"]:
         tk.Label(text="-" * 50, width=50).pack()
         tk.Button(text='BACK TO THE MENU', command=lambda *args: set_advanced(window, param)).pack()
     else:
         tk.Button(text='SETTING', command=lambda *args: set_advanced(window, param)).pack()
+        tk.Button(text='SAVE AND CONTINUE', command=window.quit).pack()
 
-    tk.Button(text='SAVE AND CONTINUE', command=window.quit).pack()
+    
 
 
     window.mainloop()
@@ -308,17 +261,14 @@ def getparams():
     param["neckoffset"] = [0.0, -0.2, 0.1]
     param["prevskel"] = preview_skeleton
     param["waithmd"] = dont_wait_hmd
- #추가 주석처리 (08/01)
     param["smooth"] = 0.5
     param["camlatency"] = 0.05
     param["feetrot"] = False
     param["use_hands"] = use_hands
     param["ignore_hip"] = False
-    
     param["camera_settings"] = False
     param["camera_height"] = camera_height
     param["camera_width"] = camera_width
-     #추가 주석처리 (08/01)
     param["model_complexity"] = model_complexity
     param["smooth_landmarks"] = mp_smoothing
     param["static_image"] = static_image
