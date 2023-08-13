@@ -182,9 +182,6 @@ def getparams():
             backend_options_frame.pack_forget()
     
  
-    tk.Radiobutton(backend_selection_frame, text="SteamVR", variable=varbackend, value=1, command=show_hide_backend_options).pack(side=tk.LEFT)
-    tk.Radiobutton(backend_selection_frame, text="VRChatOSC", variable=varbackend, value=2, command=show_hide_backend_options).pack(side=tk.LEFT)
-    backend_selection_frame.pack(side=tk.TOP)
     
     tk.Label(backend_options_frame, text="IP/port:").pack(side=tk.LEFT)
     backend_ip = tk.Entry(backend_options_frame, width=15)
@@ -199,6 +196,10 @@ def getparams():
    
     param["switch_advanced"] = False
     if param["advanced"]:
+        
+        tk.Radiobutton(backend_selection_frame, text="SteamVR", variable=varbackend, value=1, command=show_hide_backend_options).pack(side=tk.LEFT)
+        tk.Radiobutton(backend_selection_frame, text="VRChatOSC", variable=varbackend, value=2, command=show_hide_backend_options).pack(side=tk.LEFT)
+        backend_selection_frame.pack(side=tk.TOP)
         tk.Label(text="-" * 50, width=50).pack()
         tk.Button(text='BACK TO THE MENU', command=lambda *args: set_advanced(window, param)).pack()
     else:
