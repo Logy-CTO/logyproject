@@ -120,14 +120,13 @@ def getparams():
         camheight = tk.Entry(width=20)
         camheight.pack_forget()
         camheight.insert(0, param["camera_height"])
-        
-    '''
-    tk.Label(text="Camera IP or ID:", width=50).pack()
-    camid = tk.Entry(width=50)
-    camid.pack()
-    camid.insert(0, param["camid"])
-    '''
+    
     if not param["advanced"]:
+        tk.Label(text="Camera IP or ID:", width=50).pack()
+        camid = tk.Entry(width=20)
+        camid.pack()
+        camid.insert(0, param["camid"])
+
         tk.Label(text="Camera width:", width=50).pack()
         camwidth = tk.Entry(width=20)
         camwidth.pack()
@@ -166,13 +165,10 @@ def getparams():
         skeleton_check.pack()
 
         tk.Label(text="-" * 50, width=50).pack()
-
-        #tk.Label(text="[ADVANCED] MediaPipe estimator parameters:", width=50).pack()
    
     backend_frame = tk.Frame(window)
     backend_selection_frame = tk.Frame(backend_frame)
     backend_options_frame = tk.Frame(backend_frame)
-
     varbackend = tk.IntVar(value=param["backend"])
 
     def show_hide_backend_options():
@@ -180,9 +176,7 @@ def getparams():
             backend_options_frame.pack(side=tk.BOTTOM)
         else:
             backend_options_frame.pack_forget()
-    
  
-    
     tk.Label(backend_options_frame, text="IP/port:").pack(side=tk.LEFT)
     backend_ip = tk.Entry(backend_options_frame, width=15)
     backend_ip.insert(0, param["backend_ip"])
